@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+    <script type="text/javascript">
+        window.onload = function onLoad() {
+            param = GetQueryString();
+            target = document.getElementById("param");
+            target.innerHTML = param["q"];
+        }
+
+        function GetVRImagePath() {
+            param = GetQueryString();
+            console.log('<<<<<<<< call VRimagePath = ' + param["q"]);
+            return param["q"];
+        }
+
+
+        function GetQueryString() {
+            if (1 < document.location.search.length) {
+                // 最初の1文字 (?記号) を除いた文字列を取得する
+                var query = document.location.search.substring(1);
+
+                // クエリの区切り記号 (&) で文字列を配列に分割する
+                var parameters = query.split('&');
+
+                var result = new Object();
+                for (var i = 0; i < parameters.length; i++) {
+                    // パラメータ名とパラメータ値に分割する
+                    var element = parameters[i].split('=');
+
+                    var paramName = decodeURIComponent(element[0]);
+                    var paramValue = decodeURIComponent(element[1]);
+
+                    // パラメータ名をキーとして連想配列に追加する
+                    result[paramName] = decodeURIComponent(paramValue);
+                    
+                    console.log('result[' + paramName + ']' + result[paramName]);
+                }
+
+                return result;
+            }
+            return null;
+        }
+    </script>    
+
+<script>
+/* 
+sub.js
+
+画像の貼り付け関数
+imgNameで指定した画像をsizex, sizeyのサイズでr_minからr_maxの半径の間にnum枚貼り付ける。
+
+imgName:画像のID名
+sizex:画像の幅
+sizey:画像の高さ
+r_min:radiusの最小値
+r_max:radiusの最大値
+nums:画像を貼り付ける数
+*/
+
+function genStar(imgName, sizex, sizey, r_max, r_min, nums)
+{
+    var theta1;
+    var theta2;
+    var radius1;
+    var radius2;
+    var tmp;
+    // generate star
+    var scene = document.querySelector('a-scene');
+    for (var i = 0; i < nums; i++) {    
+        theta1 = random(0, 360);
+        theta2 = random(0, 360);
+        
+        var star = document.createElement('a-image');
+        star.setAttribute('src', imgName);
+        star.setAttribute('width', sizex);
+        star.setAttribute('height', sizey);
+        star.setAttribute('look-at', '#target');
+        
+        radius1 = r_min;
+        var y = radius1 * Math.sin(deg2rad(theta1));
+        radius2 = radius1 * Math.cos(deg2rad(theta1));
+        var x = radius2 * Math.cos(deg2rad(theta2));
+        var z = radius2 * Math.sin(deg2rad(theta2));
+        var str = String(x) + " " + String(y) + " " + String(z);
+        star.setAttribute('position', str);
+        scene.appendChild(star);
+    }
+    
+}
+
+function setup() {
+    genStar('#star', '50', '50', 700, 1000, 500);
+}
+
+
+
+
+
+
+
+/* ボタンの数 */
+var objnum = 10;
+
+function clickHandler(e) {
+    console.log("LLV clic close");
+    obj1.setAttribute('visible', 'true');
+    setTimeout(image_reset,500);;
+}
+
+function image_reset() {
+    console.log("image reset");
+    obj1.setAttribute('visible', 'false');
+    history.back();
+}
+
+function init() {
+    /* クリックイベントハンドラの登録 */
+    var c = document.getElementsByClassName('obj');
+    console.log("クリックイベントハンドラの登録");
+    for (i = 0; i < c.length; i++) {
+        document.getElementById('obj' + i).addEventListener('click', clickHandler, false);
+    }
+
+    /* sub.js */
+    setup();
+
+}
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+
+</script>
+
+<!-- a-frame -->
+<script src="https://aframe.io/releases/0.2.0/aframe.min.js"></script>    
+
+
+<script src="js/util.js"></script>    
+
+
+</head>
+<body onload="init()">
+
+    <a-scene>  
+        <a-assets>
+            <img id="back_on" src="../images/back_on.png">
+    		<img id="back_off" src="../images/back_off.png">
+            <img id="star" src="../images/star.png">
+        </a-assets>     
+
+        <!-- 戻るボタン（真下に配置） -->
+        <a-image id="obj0" class="obj" src="#back_off" rotation="-90 0 0" height="1.5" width="1.5" visible="true"  position="0 -3.5 0"></a-image>
+        <a-image id="obj1" class="obj" src="#back_on"  rotation="-90 0 0" height="1.5" width="1.5" visible="false" position="0 -3.5 0"></a-image>
+
+
+        <!-- 反応ボタン（任意の配置） -->
+        <a-image id="obj2" class="obj" src="#back_off" rotation="0 -90 0"  position="0 3 -10" visible="true" ></a-image>
+        <a-image id="obj3" class="obj" src="#back_on"  rotation="0 0 0"  position="0 3 -10" visible="false"></a-image>
+
+        <a-image id="obj4" class="obj" src="#back_off" rotation="0 0 0"  position="10 3  0" visible="true" ></a-image>
+        <a-image id="obj5" class="obj" src="#back_on"  rotation="0 0 0"  position="10 3  0" visible="false"></a-image>
+
+        <a-image id="obj6" class="obj" src="#back_off" rotation="0 90 0"  position="0 3 10" visible="true" ></a-image>
+        <a-image id="obj7" class="obj" src="#back_on"  rotation="0 0 0"  position="0 3 10" visible="false"></a-image>
+
+        <a-image id="obj8" class="obj" src="#back_off" rotation="0 180 0"  position="-10 3 0" visible="true" ></a-image>
+        <a-image id="obj9" class="obj" src="#back_on"  rotation="0 0 0"  position="-10 3 0" visible="false"></a-image>
+
+        <!-- LLV VR Path -->
+
+     
+        <script>
+            var scene = document.querySelector('a-scene');
+            var sky = document.createElement('a-sky');    
+            var VRimagePath = GetVRImagePath();  
+             //sky.setAttribute('src', '../vr/hebiko.jpg');
+            sky.setAttribute('src', VRimagePath);
+            scene.appendChild(sky);
+
+        </script>
+
+        <!-- 視線カーソル -->
+        <a-camera position="0 0 0">
+            <a-entity id="myCursor"
+                cursor="fuse:true;
+                maxDistance:30;
+                timeout:500;"
+                scale="0.2 0.2 0.2" 
+                position="0 0 -3.4" 
+                geometry="primitive: ring"
+                material="color: green;
+                shader: flat;             
+                opacity:0.5">
+            </a-entity>
+        </a-camera>
+
+        <a-sphere id="target" color="#fff" radius="0.01"></a-sphere>
+
+
+        <!-- LLV VR表示 -->
+        <a-sky></a-sky>
+<!--
+        <a-sky color="#000"></a-sky>
+-->        
+        
+    </a-scene>
+
+</body>
+</html>

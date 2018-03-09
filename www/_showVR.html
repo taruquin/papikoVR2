@@ -1,0 +1,59 @@
+<!--
+ このページは正常に動作しません
+ onsenui と a-frame は同居できません
+-->
+
+<ons-page ons-show="updateToolbar('showVR')" id="showVR.html">
+
+        <a-scene>
+                <a-assets>
+                        <img id="back_on" src="images/back_on.png">
+                        <img id="back_off" src="images/back_off.png">
+                        <img id="star" src="images/yappi_388x388.png">
+                </a-assets>
+
+                <!-- 戻るボタン（真上に配置） -->
+            <a-image id="obj0" class="obj" src="#back_off" rotation="-90 0 0" height="1.5" width="1.5" visible="true"  position="0 -3.5 0"></a-image>
+            <a-image id="obj1" class="obj" src="#back_on"  rotation="-90 0 0" height="1.5" width="1.5" visible="false" position="0 -3.5 0"></a-image>
+
+            <!-- シーン切り替えオブジェクト -->
+            <a-image   id="path0"
+                      src="#star"
+                 position="15.259 1.707 -14.77"
+                 rotation="180 0 180"
+                   height="1.5" width="1.5"
+                  visible="true">
+            </a-image>
+
+            <a-sky id="pdc0"  visible="true"  src="vr/001_VR_papiko.jpg" rotation="0 -130 0"></a-sky>
+            <a-sky id="pdc1"  visible="false" src="vr/002_VR_papiko.jpg" rotation="0 -130 0"></a-sky>
+
+            <a-entity position="0 0 0">
+                <a-entity camera look-controls wasd-controls rotation="0 0 0">
+                    <a-entity position="0 0 -3"
+                              geometry="primitive: ring; radiusOuter: 0.30; radiusInner: 0.20;"
+                              material="color: cyan; shader: flat"
+                                cursor="maxDistance: 30; fuse: true; timeout: 1500">
+                                <a-animation begin="fusing" easing="ease-in" attribute="scale"fill="forwards" from="1 1 1" to="0.1 0.1 0.1" dur="1500"></a-animation>
+                                <!-- <a-entity text="text: What's up" position="0 0 0"></a-entity> -->
+                    </a-entity>
+                </a-entity>
+            </a-entity>
+        </a-scene>
+        
+        <!-- シーン切り替え -->
+        <script>
+            var pdc0 = document.querySelector('#pdc0');
+            var pdc1 = document.querySelector('#pdc1');
+
+            var path0 = document.querySelector("#path0");
+
+            document.querySelector('#path0').addEventListener('click', function() {
+                path0.setAttribute('visible', 'false');
+                pdc0.setAttribute('visible', 'false');
+                pdc1.setAttribute('visible', 'true');
+                console.log("Play Media");
+                media.play();
+            });
+        </script>
+</ons-page>

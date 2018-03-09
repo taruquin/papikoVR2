@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>VRサンプル</title>
+  <!-- A-FrameのライブラリをCDNで読み込む -->
+  <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 物体を回転させる
+      var rotate = function(img, angle) {
+        // 角度が360以上にならないように
+        if(angle > 360) {
+          angle = 0;
+        } else {
+          angle += 0.5;
+        }
+        // 次フレームの準備
+        requestAnimationFrame(rotate.bind(null, img, angle));
+        // 属性値を変更して回転
+        var interval = imgs.length * 10;    // kamome
+        img.setAttribute('rotation', '0 ' + angle * 10 + ' 0');
+        img.setAttribute('position', Math.cos(Math.PI * angle / interval) * 4 + ' ' + (Math.sin(Math.PI * angle * 8 / interval) / 2 + 1.5) + ' ' + Math.sin(Math.PI * angle / interval) * 4);
+      }
+
+      var imgs = document.querySelectorAll('a-image');
+
+      for (var i = 0; i < imgs.length; i++) {
+        // カーソルで拡大
+        imgs[i].addEventListener('mouseenter', function () {
+          this.textContent = null;
+          var animation = document.createElement('a-animation');
+          animation.setAttribute('attribute', 'scale');
+          animation.setAttribute('to', '3 3 3');
+          animation.setAttribute('dur', '500');
+          this.appendChild(animation);
+        });
+        imgs[i].addEventListener('mouseleave', function () {
+          this.textContent = null;
+          var animation = document.createElement('a-animation');
+          animation.setAttribute('attribute', 'scale');
+          animation.setAttribute('to', '1 1 1');
+          animation.setAttribute('dur', '500');
+          this.appendChild(animation);
+        });
+        rotate(imgs[i], 20 * i);
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- シーンの定義 -->
+  <a-scene>
+        <a-assets>
+            <img id="sky" src="images/sky.jpg">
+            <img id="logo" src="images/yappi_388x388.png">
+        </a-assets>
+        
+    <!-- 背景画像 -->
+    <a-sky src="vr/001_VR_papiko.jpg"></a-sky>
+    <!-- 画像 -->
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+<!--    
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+    <a-image src="#logo" position="0 0 0"></a-image>
+-->
+    <!-- 視点表示 -->
+    <a-camera>
+      <a-cursor color="#fff" fuse="true">
+      </a-cursor>
+    </a-camera>
+  </a-scene>
+</body>
+</html>

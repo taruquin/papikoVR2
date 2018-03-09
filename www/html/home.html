@@ -1,0 +1,43 @@
+<!--
+    リスト表示画面
+-->
+<ons-navigator var="myNavigator">
+<ons-page>
+<!--
+    <div class="content">
+-->
+
+
+<ons-list>
+<!--
+    <ons-navigator var="myNavigator">
+-->
+        <ons-list-item ng-repeat="LLV in LLVSpace" ng-click="viewVR( LLV )">
+
+        <div class="left">
+            <img  class="thumbnail" ng-src="{{ LLV.imageURL }}">
+        </div>
+        <div class="center">
+          <div class="title">
+            {{ LLV.LLVname }}
+          </div>
+          <div class="user">
+            <ons-icon icon="fa-user"></ons-icon>
+            <span style="font-size: 12px"> {{ LLV.author ? LLV.author : "Anonymous" }}</span>
+          </div>
+          <div class="desc">
+            {{ LLV.discription }}
+          </div>
+        </div>
+        </ons-list-item>
+<!--
+    </ons-navigator>
+-->
+
+</ons-list>
+<!--
+</div>
+-->
+
+</ons-page>
+</ons-navigator>

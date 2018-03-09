@@ -1,0 +1,37 @@
+<!--
+    VRコンテンツ詳細画面
+-->
+<ons-page ons-show="updateToolbar('showVR')" id="html/detail.html">
+
+<br>
+    <center>
+        <div class="left">
+            <!-- 引継ぎデータは予めlocalStrage に格納 -->
+            <!-- <a href="new_vr_viewer.html"> -->
+            <a href="showVR.html">
+                <img class="detailthumbnail" ng-src="{{ LLVSpace[currentIndex].imageURL }}">
+            </a>
+        </div>
+        <div class="center">
+          <div class="title">
+            {{ LLVSpace[currentIndex].LLVname }}
+          </div>
+          <div class="user">
+            <ons-icon icon="fa-user"></ons-icon>
+            <span style="font-size: 12px"> {{ LLVSpace[currentIndex].author ? LLVSpace[currentIndex].author : "Anonymous" }}</span>
+          </div>
+          <div class="desc">
+            {{ LLVSpace[currentIndex].discription }}
+          </div>
+        </div>
+        
+        <br>
+
+        <!-- onsenui から　a-frame を呼ぶのは無理        
+        <ons-button ng-click="showVR()"> 見る </ons-button>
+        -->        
+        <ons-button ng-click="listVR()"> 戻る </ons-button>       
+    </center>
+
+</ons-page>
+

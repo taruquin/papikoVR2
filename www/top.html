@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+
+  <title>★ぱぴこ★</title>
+  
+  <script src="cordova.js"></script>
+  <script src="./lib/onsenui/js/onsenui.js"></script>
+  <script src="./lib/angular/angular-1.5.8.min.js"></script>
+  <script src="./lib/onsenui/js/angular-onsenui.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+
+  <script src="js/page2controller.js"></script> 
+
+  <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+</head>
+<body ng-app="myApp" ng-controller="VideosController">
+
+<script type="text/javascript">
+<!--
+console.log("LLV started.");
+//-->
+</script>
+
+    <script language="javascript" type="text/javascript">
+        function NowLoading() {
+            target = document.getElementById("output");
+            target.innerHTML = "Now Loading...";
+            return false;
+        }
+    </script>
+
+    <script>
+        var playGame = function (button) {
+            button.value = "Now Loading";
+            window.location.href = 'game.html';
+        }
+    </script>
+
+
+    <script>
+        // Time-Line 表示時のブラウザ指定
+        function URLClick(url) {
+            console.log("URLClicked = "+url);
+            window.open = cordova.InAppBrowser.open;
+            window.open(url, "_blank", 'location=yes');
+            /*
+            _blank InAppBrowserを開く
+            _system システム標準のWebブラウザーを開く
+            */
+        }
+    </script>
+
+
+
+<ons-navigtor var="myNavigator">
+
+  <ons-page>
+
+    <ons-toolbar>
+      <ons-if class="left" platform="android"></ons-if>
+      
+      <div class="center" style="width: 100%">
+        <!-- ToolBar タイトル -->
+        <ons-if platform="android">{{LLVSpaceTitle}}</ons-if>
+        <ons-if platform="ios other">{{LLVSpaceTitle}}</ons-if>
+        <!--
+        <ons-if platform="ios other">{{toolbarTitle}}</ons-if>
+        -->
+      </div>
+<!--      
+      <ons-if class="right" platform="android">
+        <ons-toolbar-button ng-click="androidSearchModal.show(); ">
+          <ons-icon icon="md-search"></ons-icon>
+        </ons-toolbar-button>
+      </ons-if>
+-->
+    </ons-toolbar>
+
+<ons-tabbar var="tabbar">
+    <ons-tab page="html/home.html"    active icon="ion-ios-home"            label="Home">      </ons-tab>    
+    <ons-tab page="html/twitter.html"  icon="ion-social-twitter"            label="TimeLine">  </ons-tab>
+    <ons-tab page="html/minigame.html" icon="ion-ios-game-controller-b"     label="mini Game"> </ons-tab>
+    <ons-tab page="html/profiles.html" icon="ion-android-person"            label="Profiles">  </ons-tab>
+    <!--    
+    <ons-tab page="html/setting.html" icon="ion-ios-gear"             label="Setting">   </ons-tab>   
+    -->
+</ons-tabbar>
+</ons-page>
+  
+</ons-navigator>
+
+</body>
+</html>

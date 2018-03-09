@@ -1,0 +1,60 @@
+<!--
+    Twitter Time-Line
+-->
+
+<ons-page>
+
+
+<style>
+html,body{
+ width:100%;
+ height:100%;
+ padding:0;
+ margin:0;
+ }
+ iframe{
+ width:100%;
+ height:100%;
+ padding:0;
+ margin:0;
+ border:0;
+ }
+ 
+.square_btn{
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    background: #f7f7f7;
+    border-left: solid 6px #ff7c5c;/*左線*/
+    color: #ff7c5c;/*文字色*/
+    font-weight: bold;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+}
+.square_btn:active {
+    box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+    transform: translateY(2px);
+}
+ 
+</style>
+
+<img src="images/icon_320.png">
+<p>
+<input class="square_btn" type="button" value="ぱぴこのTwitter" onclick="URLClick('https://www.piyamaru.com/vr/LLV/app/papiko/timeline.html');">
+</p>
+
+
+
+<!-- リンクでブラウザ起動
+    <a href="#" onclick="URLClick('https://www.piyamaru.com/vr/LLV/app/papiko/timeline.html');">
+        papiko timeline
+    </a>
+    <div onclick="URLClick('https://www.piyamaru.com/vr/LLV/app/papiko/timeline.html');">papiko timeline</div>
+-->
+
+
+<!-- iframe での実装
+<iframe src="https://www.piyamaru.com/vr/LLV/app/papiko/timeline.html" seamless></iframe>
+-->
+
+</ons-page>
+

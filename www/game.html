@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Mini-Game</title>   
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+        <script src="components/loader.js"></script>
+        
+        <meta charset="UTF-8">
+
+        <!-- sweet alert -->
+        <link rel="stylesheet" href="css/sweet-alert.css">
+        <script src="js/sweet-alert.js"></script>
+
+        <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+
+        <style type="text/css">
+            div#time {
+                position: absolute;
+                width: 100%;
+                //left: 20px;
+                top: 5px;
+                font-size: 1.5rem;
+                color: black;
+                font-family: PixelMplus10-Regular;
+                opacity: 0.80; /* 80％不透明度(＝20％透過) */
+                background-color: rgba( 204, 255, 204, 0.55 );
+            }
+            div#score {
+                position: absolute;
+                width: 100%;
+                //left: 20px;
+                bottom: 5px;
+                font-size: 1.5rem;
+                color: black;
+                font-family: PixelMplus10-Regular;
+                opacity: 0.80; /* 80％不透明度(＝20％透過) */
+                background-color: rgba( 204, 255, 204, 0.55 );
+            }
+            
+            /* Webフォント読み込み */
+            @font-face {
+                font-family: PixelMplus10-Regular;
+                src: url('font/PixelMplus10-Regular.ttf') format("truetype");
+            }
+
+        </style>
+        <script src="js/sound.js"></script>
+
+        <script>
+            // 戻るボタンのイベント発生時に実行
+            function clickHandler(e) {
+                console.log("LLV> clic close");
+                obj1.setAttribute('visible', 'true');
+                setTimeout(image_reset,500);;
+            }
+                
+            function image_reset() {
+                console.log("image reset");
+                obj1.setAttribute('visible', 'false');
+                history.back();
+            }
+
+            function init() {                    
+                /* 戻るボタンのイベント登録 */
+                var c = document.getElementsByClassName('obj');
+                console.log("LLV> 戻るボタンのイベント登録");
+                for (i = 0; i < c.length; i++) {
+                    document.getElementById('obj' + i).addEventListener('click', clickHandler, false);
+                }
+                soundReload("sound/decision12.mp3");
+            }
+        </script>        
+    </head>
+    
+    <body onload="init()">
+        <a-scene>
+            <a-assets>
+                <img id="world" src="vr/010_VR_papiko.jpg">
+                <img id="back_on" src="images/back_on.png">
+                <img id="back_off" src="images/back_off.png">
+                <img id="boxtexture" src="images/papiko.jpg">
+            </a-assets>
+
+            <!-- 戻るボタン（真下に配置） -->
+            <a-image id="obj0" class="obj" src="#back_off" rotation="-90 0 0" height="1.5" width="1.5" visible="true"  position="0 -3.5 0"></a-image>
+            <a-image id="obj1" class="obj" src="#back_on"  rotation="-90 0 0" height="1.5" width="1.5" visible="false" position="0 -3.5 0"></a-image>
+
+            <!-- 視線カーソル -->
+            <a-camera position="0 0 0">
+                <a-entity>
+                    <a-cursor fuse="true" fuse-timeout='300'></a-cursor>                 
+                    <a-animation begin="fusing" easing="ease-in" attribute="scale" fill="forwards" from="1 1 1" to="0.1 0.1 0.1" dur="1500">    
+                    </a-animation>
+                </a-entity>
+            </a-camera>
+         
+            <a-sky src="#world"></a-sky>
+        </a-scene>
+        
+        <div id="time">
+            Time :
+            <span id="time-limit">15</span>
+        </div>
+        <div id="score">
+            Score :
+            <span id="my-score">0</span>
+        </div>
+        <script src="js/cube.js"></script>
+        <script src="js/control-objects.js"></script>
+
+    </body>
+</html>

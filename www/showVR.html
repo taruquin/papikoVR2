@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- ぱぴこを探せ基本ロジック -->
+        <meta charset="utf-8">
+   
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+        <script src="components/loader.js"></script>
+        <link rel="stylesheet" href="components/loader.css">
+
+        <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+
+<script type="text/javascript">
+    // シーン番号
+    var scene = 0;
+
+    //localStorageからデータを出す
+    console.log("LLV> ++++++++ localStorage:get ++++++++");
+    var vpath1 = localStorage.getItem('vpath');             // 表示するVR画像パス
+    var vpath2 = localStorage.getItem('vpath_after');       // 表示するVR画像パス
+
+    var vposition = localStorage.getItem('vposition');      // ターゲットの位置
+var vposition2 = localStorage.getItem('vposition2');      // ターゲットの位置
+
+    var vstar = localStorage.getItem('vstar');              // ターゲットの画像
+var vstar2 = localStorage.getItem('vstar2');              // ターゲットの画像
+
+    var vsound = localStorage.getItem('vsound');            // 音源パス
+    
+    console.log("LLV> get vpath1 = "+vpath1);
+    console.log("LLV> get vsound = "+vsound);
+    console.log("LLV> get vposition = "+vposition);       
+</script>
+
+
+    <!-- 音の再生 -->
+    <script>        
+         //変数に音源となるファイルの名前を指定します。この変数はMediaオブジェクトを生成する際に使用します。
+//         var sound = "sound/atari.mp3";
+         var sound = vsound;
+
+         //Mediaオブジェクトを利用するためにここで変数宣言しておきます。この段階では「null」、すなわち中に何もない空の状態で宣言しておきます。
+         var media = null;
+
+        //Androidでは絶対パスを指定する必要があるため、そのパスを取得するための関数です。
+         function getPath(){
+             var str = location.pathname;
+             var i = str.lastIndexOf('/');
+             return str.substring(0,i+1);
+         }
+
+         //PhoneGapの読み込みが完了した際の「deviceready」イベント発生時にonDeviceReady()関数を呼び出すイベントを設定します。
+         document.addEventListener("deviceready", onDeviceReady, false);
+
+         function onDeviceReady(){
+            //PhoneGapの読み込みが完了した際に「PhoneGapの読み込みが完了しました」と通知を出しています
+            //alert("PhoneGapの読み込みが完了しました");
+                /*効果音を再生するための「オブジェクト」を生成してそれぞれ変数から利用できるようにします。
+                  第１引数のurl指定を「getPath() + src」とすることで音源となるファイルへのパスを示すとともに
+                  第2、第３引数で再生成功•再生失敗時のコールバック関数を定義しています。*/
+            media = new Media(getPath() + sound, onSuccess, onError);
+        }
+
+         if (typeof Windows != "undefined") {
+             // Windowsストアアプリでalert関数を使用するための記述
+             window.alert = function(s) {
+                 new Windows.UI.Popups.MessageDialog(s).showAsync();
+             }
+         }
+
+         //Mediaオブジェクトを生成する際の第２引数に設定した音声再生成功時のコールバック関数です
+         function onSuccess() {
+              console.log("playAudio():Audio Success");
+         }
+
+         //Mediaオブジェクトを生成する際の第３引数に設定した音声再生失敗時のコールバック関数です
+         function onError(error) {
+            alert('code: '    + error.code    + '\n' +
+                  'message: ' + error.message + '\n');
+         }        
+
+    /* ボタンの数 */
+    var objnum = 1;
+
+    // 戻るボタンのイベント発生時に実行
+    function clickHandler(e) {
+        console.log("LLV> clic close");
+        obj1.setAttribute('visible', 'true');
+        setTimeout(image_reset,500);;
+    }
+                
+    function image_reset() {
+        console.log("image reset");
+        obj1.setAttribute('visible', 'false');
+        history.back();
+    }
+
+    function playSound() {
+        if (sound != 'OFF'){
+            media.play();
+            console.log("LLV> Play Media");
+        } else {
+            console.log("LLV> Play Media silent");
+        }
+    };
+
+    function clickHandlerSkyChange(e) {
+        console.log("LLV> clickHandlerSkyChange");
+        if (scene == 0){
+            console.log("LLV> scene = "+scene);
+            path0.setAttribute('visible', 'false');
+            path1.setAttribute('visible', 'true');
+            pdc0.setAttribute('visible', 'false');
+            pdc1.setAttribute('visible', 'true');
+            scene=1;
+            playSound();
+        } else {
+            console.log("LLV> scene = "+scene);
+            path0.setAttribute('visible', 'true');
+            path1.setAttribute('visible', 'false');
+            pdc0.setAttribute('visible', 'true');
+            pdc1.setAttribute('visible', 'false');
+            scene=0;                
+            playSound();
+        }
+    }
+
+    function init() {                    
+        scene = 0;  //シーン番号初期化
+                    
+        /* 戻るボタンのイベント登録 */
+        var c = document.getElementsByClassName('obj');
+        console.log("LLV> 戻るボタンのイベント登録");
+        for (i = 0; i < c.length; i++) {
+            document.getElementById('obj' + i).addEventListener('click', clickHandler, false);
+        }
+
+        /* シーン切り替えのイベント登録 */  
+        console.log("LLV> シーン切り替えのイベント登録");
+        document.querySelector('#path0').addEventListener('click',clickHandlerSkyChange, false);
+        document.querySelector('#path1').addEventListener('click',clickHandlerSkyChange, false); 
+        
+        // 可変値属性セット
+        vr_image1.setAttribute('src', vpath1);
+        vr_image2.setAttribute('src', vpath2);
+        star.setAttribute('src', vstar);
+        star2.setAttribute('src', vstar2);
+
+        path0.setAttribute('position', vposition);
+        path1.setAttribute('position', vposition2);
+
+
+        // シーン初期値
+        path0.setAttribute('visible', 'true');
+        path1.setAttribute('visible', 'false');
+        pdc0.setAttribute('visible', 'true');
+        pdc1.setAttribute('visible', 'false');
+
+    }
+</script>
+</head>
+
+<body onload="init()">
+
+    <a-scene>
+        <a-assets>
+            <img id="vr_image1" class="vr_image">
+            <img id="vr_image2" class="vr_image">
+            <img id="back_on" src="images/back_on.png">
+            <img id="back_off" src="images/back_off.png">
+            <img id="star" src="images/yappi_388x388.png">
+            <img id="star2" src="images/yappi_388x388.png">
+        </a-assets>
+
+        <!-- 戻るボタン（真下に配置） -->
+        <a-image id="obj0" class="obj" src="#back_off" rotation="-90 0 0" height="1.5" width="1.5" visible="true"  position="0 -3.5 0"></a-image>
+        <a-image id="obj1" class="obj" src="#back_on"  rotation="-90 0 0" height="1.5" width="1.5" visible="false" position="0 -3.5 0"></a-image>
+
+        <!-- シーン切り替えオブジェクト -->
+        <a-image   id="path0"
+                  src="#star"
+                 rotation="0 90 0"
+               height="1.5" width="1.5"
+              visible="true">
+        </a-image>
+
+        <a-image   id="path1"
+                  src="#star2"
+                 rotation="0 90 0"
+               height="1.5" width="1.5"
+              visible="false">
+        </a-image>
+
+        <a-sky id="pdc0"  class="vr_image1" visible="true"  src="#vr_image1" rotation="0 0 0"></a-sky>
+        <a-sky id="pdc1"  class="vr_image2" visible="false" src="#vr_image2" rotation="0 0 0"></a-sky>
+
+        <!-- 視線カーソル -->
+        <a-camera position="0 0 0">
+            <a-entity id="myCursor"
+                cursor="fuse:true;
+                maxDistance:30;
+                timeout:500;"
+                scale="0.2 0.2 0.2" 
+                position="0 0 -3.4" 
+                geometry="primitive: ring"
+                material="color: green;
+                shader: flat;             
+                opacity:0.5">
+                
+                <a-animation begin="fusing" easing="ease-in" attribute="scale" fill="forwards" from="1 1 1" to="0.1 0.1 0.1" dur="1500">    
+                </a-animation>
+            </a-entity>
+        </a-camera>
+
+    </a-scene>
+        
+    <!-- シーン切り替え -->
+
+    <script>
+        var pdc0 = document.querySelector('#pdc0');
+        var pdc1 = document.querySelector('#pdc1');
+
+        var path0 = document.querySelector("#path0");
+        var path1 = document.querySelector("#path1");
+    </script>
+
+</body>
+</html>

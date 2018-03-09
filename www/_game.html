@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>In the dark.</title>
+<meta name="description" content="In the dark.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+</head>
+<body>
+<a-scene>
+    <a-assets>
+        <!-- imgは前もって読み込む際は100%指定にしておかないと3Dオブジェクトに貼りつけた場合、欠ける可能性あり -->
+        <img id="bigface" src="images/papiko.jpg" width="100%" height="100%"><!-- モンスター画像 -->
+        <img id="bonehead" src="images/yappi_388x388.png" width="100%" height="100%"><!-- モンスター画像 -->
+        <a-asset-item id="creature-obj" src="obj/Creature01.obj"></a-asset-item><!-- OBJファイル(※1) -->
+        <audio id="nosound" src="sound/nosound01.mp3"></audio><!-- 無音サウンド -->
+    </a-assets>
+
+    <!-- OBJファイルを配置(※2) -->
+    <a-entity obj-model="obj: #creature-obj;" scale="0.006 0.006 0.006" color="#00F" position="0 1 -0.5"></a-entity>
+
+    <!-- モンスターを貼りつけた画像を配置 -->
+    <!-- 真上だ！！ -->
+    <a-image id="anything01" rotation="90 90 0" width="2" height="2" src="#bigface" position="0 3 0"></a-image>
+    <!-- 真下だ！！ -->
+    <a-image id="anything02" rotation="90 0 0" width="2" height="2" src="#bonehead" position="0 -1 0"></a-image>
+    <!-- 手前だ！！ -->
+    <a-image id="anything03" rotation="0 0 0" width="2" height="2" src="#bigface" position="0 1.5 1.5"></a-image>
+    <!-- 画面奧だ！！ -->
+    <a-image id="anything04" rotation="0 0 0" width="2" height="2" src="#bonehead" position="0 1.2 -1.5"></a-image>
+
+    <!-- カメラ -->
+    <a-sky color="#040404" segments-width="16" segments-height="4"></a-sky>
+    <a-camera wasd-controls-enabled="false" position="0 0 0"
+        sound="src:#nosound; loop:true; autoplay:true; volume:0.1">
+        <a-cursor color="#fff" fuse="true"></a-cursor>
+    </a-camera>
+
+</a-scene>
+</body>
+</html>
